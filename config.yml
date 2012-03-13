@@ -1,6 +1,11 @@
 posts:
-    path: _data/(name)/(name).md
+    path: _data/(name)
+    file: _data/(name)/(name).md
     output: output/articles/(name)
 
 templates:
     path: _layouts/default/(template).html.tpl
+
+date:
+	format: l jS \of F Y h:i:s A #Based on http://php.net/manual/en/function.date.php
+	timezone: America/New_York #Based on http://php.net/manual/en/timezones.php
