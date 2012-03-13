@@ -35,7 +35,7 @@ Okay, so that's all the files you'll need to create. If you're using images, sti
     -----
     title: This is my new post!
     author: Cyril Mengin
-    layout: post                    # Note this, it's the name of the template to be used
+    layout: post
     -----
 
 And that's it! You can now write your article underneath that. Once you've finished writing, you're ready to generate the static files. Navigate to the root directory of iceberg, and type this in the terminal:
@@ -48,9 +48,11 @@ Thanks & Credits
 ----------------
 
 **[Michel Fortin](https://github.com/michelf)** for php-markdown, used to  parse Markdown
+
 The **[SPYC Project](http://code.google.com/p/spyc/)** used for parsing YAML
 
 License
 -------
 
 Iceberg is licensed under the [WTFPL](http://sam.zoy.org/wtfpl/COPYING) license, so go wild, do what you want.
+This is not the case of external libraries used in Iceberg, so please see the licenses of PHP-Markdown and SPYC which are located at the top / bottom of the files used.
