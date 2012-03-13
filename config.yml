@@ -1,0 +1,6 @@
+posts:
+    path: _data/(name)/(name).md
+    output: output/articles/(name)
+
+templates:
+    path: _layouts/default/(template).html.tpl
