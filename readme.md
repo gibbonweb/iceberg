@@ -9,8 +9,9 @@ Installing
 
 Installing Iceberg is very simple, as it doesn't require any specific libraries or extensions, other than the ones that are already installed. Git can be nice to have, but is not required. To install Iceberg, just do the following inside a terminal:
 
-    $ cd /path/to/blog
-    $ git clone git://github.com/cyrilmengin/iceberg.git
+    $ cd ~/Desktop
+    $ git clone git://github.com/cyrilmengin/iceberg.git TestBlog
+    $ cd TestBlog
     $ mkdir output && mkdir output/articles
 
 And, that's it! You should be able to go straight into blogging at this stage, but you might want to mess around with the settings to change the output / source directory first, as well as get a proper layout/ theme.
@@ -38,7 +39,7 @@ Okay, so that's all the files you'll need to create. If you're using images, sti
     layout: post
     -----
 
-And that's it! You can now write your article underneath that. Once you've finished writing, you're ready to generate the static files. Navigate to the root directory of iceberg, and type this in the terminal:
+And that's it! You can now write your article underneath that. Once you've finished writing, you're ready to generate the static files. Go back to the root of the iceberg install, and type this:
 
     $ ./iceberg generate this-is-my-new-post
     
