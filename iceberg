@@ -4,8 +4,7 @@
 require_once __DIR__ . "/_iceberg/Iceberg.php";
 
 $iceberg = new Iceberg("config.yml");
-if (method_exists($iceberg, $argv[1])) {
+if (method_exists($iceberg, $argv[1]))
 	call_user_func_array(array($iceberg, $argv[1]), array_slice($argv, 2));
-} else {
+else
 	die("Sorry, but that isn't a valid command. Please read the help file.\n");
-}

@@ -1,11 +1,9 @@
-posts:
-    path: _data/(name)
-    file: _data/(name)/(name).md
-    output: output/articles/(name)
+general:
+    path: http://www.example.com                        # The url that your blog will be visible
+    timezone: Europe/Paris                              # See http://php.net/manual/en/timezones.php
 
-templates:
-    path: _layouts/default/(template).html.tpl
 
-date:
-	format: l jS \of F Y h:i:s A #Based on http://php.net/manual/en/function.date.php
-	timezone: America/New_York #Based on http://php.net/manual/en/timezones.php
+article:
+    input: _data/(name)/(name).md                       # The path of the article   (name) = article name
+    layouts: _layouts/default/(layout).html.tpl         # The path of the layout    (layout) = article layout
+    output: output/articles/(name)/index.html           # The path to be written to (name) = article name
