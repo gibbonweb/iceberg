@@ -2,8 +2,8 @@ general:
     path: http://www.example.com                        # The url that your blog will be visible
     timezone: Europe/Paris                              # See http://php.net/manual/en/timezones.php
 
-
 article:
     input: _data/(name)/(name).md                       # The path of the article   (name) = article name
+    assets: _data/(name)/assets                         # The dir containing assets (name) = article name
     layouts: _layouts/default/(layout).html.tpl         # The path of the layout    (layout) = article layout
     output: output/articles/(name)/index.html           # The path to be written to (name) = article name
