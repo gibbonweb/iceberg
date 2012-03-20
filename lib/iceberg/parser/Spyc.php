@@ -10,6 +10,9 @@
    * @package Spyc
    */
 
+
+namespace iceberg\parser;
+
 class Spyc {
 
   // SETTINGS

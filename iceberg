@@ -1,10 +1,20 @@
 #!/usr/bin/php
 <?php
 
-require_once __DIR__ . "/_iceberg/Iceberg.php";
+include __DIR__."/lib/iceberg/autoloader/Autoloader.php";
 
-$iceberg = new Iceberg("config.yml");
-if (method_exists($iceberg, $argv[1]))
-	call_user_func_array(array($iceberg, $argv[1]), array_slice($argv, 2));
-else
-	die("Sorry, but that isn't a valid command. Please read the help file.\n");
+use iceberg\config\Config;
+use iceberg\command\Command;
+use iceberg\autoloader\Autoloader;
+use iceberg\errorhandler\ErrorHandler;
+
+Autoloader::setNamespace("iceberg", __DIR__."/lib/iceberg");
+
+ErrorHandler::register();
+
+Config::loadFromFile(Config::TYPE_YAML, __DIR__."/config.yml");
+
+Command::setNamespace("iceberg\(command)Command");
+Command::load($argv);
+
+echo PHP_EOL;
