@@ -3,16 +3,24 @@
 
 include __DIR__."/lib/iceberg/autoloader/Autoloader.php";
 
+use iceberg\log\Log;
 use iceberg\config\Config;
 use iceberg\command\Command;
 use iceberg\autoloader\Autoloader;
 use iceberg\errorhandler\ErrorHandler;
+
+define("ROOT_DIR", __DIR__);
 
 Autoloader::setNamespace("iceberg", __DIR__."/lib/iceberg");
 
 ErrorHandler::register();
 
 Config::loadFromFile(Config::TYPE_YAML, __DIR__."/config.yml");
+date_default_timezone_set(Config::getVal("general", "timezone"));
+
+$logPath = Config::getVal("general", "logging");
+if (!!$logPath)
+	Log::setLogFile($logPath);
 
 Command::setNamespace("iceberg\(command)Command");
 Command::load($argv);

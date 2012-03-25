@@ -14,12 +14,13 @@ class Command {
 	
 	public static function load(&$args) {
 		$path = str_replace("(command)", ucfirst($args[1]), static::$namespace);
-
-		$exists = @call_user_func("$path::exists", array_slice($args, 2));
-		if (!$exists)
-			throw new CommandNotFoundException("Command ".$args[1]." not found.");
+		$passArgument = array_slice($args, 2);
 		
-		call_user_func("$path::validateThenRun", array_slice($args, 2));
+		$exists = @call_user_func("$path::exists", $passArgument);
+		if (!$exists)
+			throw new CommandNotFoundException("Command \"".$args[1]."\" not found.");
+		
+		call_user_func("$path::validateThenRun", $passArgument);
 	}
 
 }

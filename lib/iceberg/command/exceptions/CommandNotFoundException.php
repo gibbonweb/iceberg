@@ -2,4 +2,4 @@
 
 namespace iceberg\command\exceptions;
 
-class CommandNotFoundException extends	\Exception { }
+class CommandNotFoundException extends \Exception { }
