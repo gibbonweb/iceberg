@@ -56,8 +56,7 @@ class GenerateCommand extends AbstractCommand {
 		if (is_dir($articleAssets))
 			FileSystem::recursiveCopy($articleAssets, $articleOutputPath."assets", true);
 		
-		echo "-> Successfully created " .$args[0]. " at ". str_replace(ROOT_DIR, "", $articleOutputPath) .".";
-	
+		echo "-> Successfully created \"" .$args[0]. "\" at \"". str_replace(ROOT_DIR, "", $articleOutputPath) ."\".";
 	}
 
 }

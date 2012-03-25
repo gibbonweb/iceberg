@@ -11,16 +11,16 @@ use iceberg\errorhandler\ErrorHandler;
 
 define("ROOT_DIR", __DIR__);
 
-Autoloader::setNamespace("iceberg", __DIR__."/lib/iceberg");
+Autoloader::setNamespace("iceberg", ROOT_DIR."/lib/iceberg");
 
 ErrorHandler::register();
 
-Config::loadFromFile(Config::TYPE_YAML, __DIR__."/config.yml");
+Config::loadFromFile(Config::TYPE_YAML, ROOT_DIR."/config.yml");
 date_default_timezone_set(Config::getVal("general", "timezone"));
 
 $logPath = Config::getVal("general", "logging");
 if (!!$logPath)
-	Log::setLogFile($logPath);
+	Log::setLogFile(ROOT_DIR.DIRECTORY_SEPARATOR.$logPath);
 
 Command::setNamespace("iceberg\(command)Command");
 Command::load($argv);
