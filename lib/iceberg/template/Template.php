@@ -2,22 +2,23 @@
 
 namespace iceberg\template;
 
-use iceberg\config\Config;
+use iceberg\template\exceptions\TemplateFileNotFoundException;
 
 class Template {
 
 	public static function load($template, $data) {
-		ob_start();
 		
+		if (!file_exists($template))
+			throw new TemplateFileNotFoundException("Template file \"$template\" not found.");
+		
+		ob_start();
 		$post = &$data;
 		
-		include ROOT_DIR
-			   .DIRECTORY_SEPARATOR
-			   .str_replace("(layout)", $template, Config::getVal("article", "layouts"));
+		include $template;
 
 		$compiled = ob_get_contents();
-		        
 		ob_end_clean();
+		
 		return $compiled;
 	}
 

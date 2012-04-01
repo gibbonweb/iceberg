@@ -4,25 +4,30 @@
 include __DIR__."/lib/iceberg/autoloader/Autoloader.php";
 
 use iceberg\log\Log;
+use iceberg\hook\Hook;
 use iceberg\config\Config;
 use iceberg\command\Command;
 use iceberg\autoloader\Autoloader;
 use iceberg\errorhandler\ErrorHandler;
 
-define("ROOT_DIR", __DIR__);
+define("ROOT_DIR", __DIR__.DIRECTORY_SEPARATOR);
 
-Autoloader::setNamespace("iceberg", ROOT_DIR."/lib/iceberg");
+Autoloader::setNamespace("iceberg", ROOT_DIR."lib/iceberg");
+Autoloader::setNamespace("command", ROOT_DIR."lib/command");
+Autoloader::setNamespace("hook", ROOT_DIR."lib/hook");
 
 ErrorHandler::register();
 
-Config::loadFromFile(Config::TYPE_YAML, ROOT_DIR."/config.yml");
+Config::loadFromFile(Config::TYPE_YAML, ROOT_DIR."config.yml");
 date_default_timezone_set(Config::getVal("general", "timezone"));
 
 $logPath = Config::getVal("general", "logging");
 if (!!$logPath)
-	Log::setLogFile(ROOT_DIR.DIRECTORY_SEPARATOR.$logPath);
+	Log::setLogFile(ROOT_DIR.$logPath);
+	
+Hook::setNamespace("hook\(hook)Hook");
 
-Command::setNamespace("iceberg\(command)Command");
+Command::setNamespace("command\(command)Command");
 Command::load($argv);
 
 echo PHP_EOL;

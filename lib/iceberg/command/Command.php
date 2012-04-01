@@ -20,7 +20,7 @@ class Command {
 		if (!$exists)
 			throw new CommandNotFoundException("Command \"".$args[1]."\" not found.");
 		
-		call_user_func("$path::validateThenRun", $passArgument);
+		call_user_func("$path::run", $passArgument);
 	}
 
 }
