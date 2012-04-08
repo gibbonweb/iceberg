@@ -1,16 +1,16 @@
 general:
 
-	path: http://www.example.com                        # The url that your blog will be visible
-	timezone: Europe/Paris                              # See http://php.net/manual/en/timezones.php
+	path: http://www.example.com                            # The url that your blog will be visible
+	timezone: Europe/Paris                                  # See http://php.net/manual/en/timezones.php
 
-	logging: iceberg.log                                # Where Iceberg should log errors. Set to false for none
-	database: iceberg.db								# The path of the SQLite database that will contain post info
-	output: output										# The root for the output directory
+	logging: iceberg.log                                    # Where Iceberg should log errors. Set to false for none
+	database: iceberg.db                                    # The path of the SQLite database that will contain post info
+	output: output                                          # The root for the output directory
 
 article:
 
-	input: data/(name)				                 	# The path of the article (name) = article name
-	output: output/article/(name)						# The file the blog post will be written to
+	input: data/(name)                                      # The path of the article (name) = article name
+	output: output/article/(name)                           # The file the blog post will be written to
 
-	layouts: layouts/default/(layout).html.tpl         	# The path of the layout (layout) = article layout
-	reloads: layouts/default/(layout).reload.yml		# The path of the reload files (layout) = article layout
+	layouts: layouts/default/(layout).html.tpl              # The path of the layout (layout) = article layout
+	reloads: layouts/default/(layout).reload.yml            # The path of the reload files (layout) = article layout
