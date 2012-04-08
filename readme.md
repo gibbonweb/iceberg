@@ -59,7 +59,6 @@ To create a hook, simply create a file in the ``lib/hook`` dir, and put the corr
 For example:
 	
 	lib/hook/PreGenerateHook.php
-
 	
 	<?php
 	
@@ -77,6 +76,7 @@ For example:
 		public static function prepare() {
 			// Anything that should be run before the actual shell hook is run.
 			// In this case, we're setting the path where the shell hook should be run.
+			// I'm too lazy to try and figure out the relative path, so why not make it absolute?
 			static::$path = ROOT_DIR."output";
 		}
 	
