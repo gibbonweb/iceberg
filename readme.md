@@ -44,6 +44,44 @@ And that's it! You can now write your article underneath that. Once you've finis
     
 Your new article should now be awaiting you in the output dir!
 
+Writing Hooks
+-------------
+
+Iceberg has a hook feature, similar to git. Basically, hooks are scripts that will be run at specific moments during the execution of a command.
+Iceberg currently has the following hooks:
+
++ **preGenerate:** this hook is run before any compiling of posts is done. It will be done for each individual file if the ``--all`` parameter is used.
++ **postGenerate:** this hook is run after any compiling of posts is done. It will be done for each individual file if the ``--all`` parameter is used.
+
+*Iceberg currently only supports shell-script based hooks. Pure PHP hooks are in the works*
+
+To create a hook, simply create a file in the ``lib/hook`` dir, and put the corresponding code inside. The name of the hook *file* should be ucfirst, and have "Hook" appended to it.
+For example:
+	
+	lib/hook/PreGenerateHook.php
+
+	
+	<?php
+	
+	namespace hook;
+	
+	use iceberg\hook\AbstractShellHook;
+	
+	class PostGenerateHook extends AbstractShellHook {
+	
+		protected static $path = "";
+		
+		// The command you want to run
+		protected static $command = "mkdir example";
+		
+		public static function prepare() {
+			// Anything that should be run before the actual shell hook is run.
+			// In this case, we're setting the path where the shell hook should be run.
+			static::$path = ROOT_DIR."output";
+		}
+	
+	}
+
 Thanks & Credits
 ----------------
 

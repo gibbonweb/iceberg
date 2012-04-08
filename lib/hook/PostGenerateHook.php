@@ -4,7 +4,6 @@ namespace hook;
 
 use iceberg\hook\AbstractShellHook;
 
-
 class PostGenerateHook extends AbstractShellHook {
 
 	protected static $path = "";
