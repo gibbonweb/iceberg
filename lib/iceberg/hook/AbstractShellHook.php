@@ -17,8 +17,8 @@ abstract class AbstractShellHook {
 
 		if (!is_dir(static::$path))
 			throw new HookDirectoryNotFoundException("Hook path \"" .static::$path. "\" is not a directory.");
-
 		chdir(static::$path);
+		
 		if (!is_array(static::$command))
 			static::$command = array(static::$command);
 		

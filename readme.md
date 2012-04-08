@@ -53,12 +53,10 @@ Iceberg currently has the following hooks:
 + **preGenerate:** this hook is run before any compiling of posts is done. It will be done for each individual file if the ``--all`` parameter is used.
 + **postGenerate:** this hook is run after any compiling of posts is done. It will be done for each individual file if the ``--all`` parameter is used.
 
-*Iceberg currently only supports shell-script based hooks. Pure PHP hooks are in the works*
-
 To create a hook, simply create a file in the ``lib/hook`` dir, and put the corresponding code inside. The name of the hook *file* should be ucfirst, and have "Hook" appended to it.
 For example:
 	
-	lib/hook/PreGenerateHook.php
+	lib/hook/PostGenerateHook.php
 	
 	<?php
 	
@@ -81,6 +79,26 @@ For example:
 		}
 	
 	}
+	
+or, for a pure-PHP hook;
+
+	lib/hook/PreGenerateHook.php
+	
+	<?php
+	
+	namespace hook;
+	
+	use iceberg\hook\AbstractCodeHook;
+	
+	class PreGenerateHook extends AbstractCodeHook {
+	
+		public static function run() {
+			echo "The pre-generate hook was run! (Don't worry, it's harmless)", PHP_EOL;
+		}
+	
+	}
+	
+(Both these examples are actually placeholder hooks, and they're already part of Iceberg, so you can refer to them / edit them right in the hooks directory.)
 
 Thanks & Credits
 ----------------

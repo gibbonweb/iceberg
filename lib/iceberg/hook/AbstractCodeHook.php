@@ -2,10 +2,10 @@
 
 namespace iceberg\hook;
 
-abstract class AbstractShellHook {
+abstract class AbstractCodeHook {
 
-	abstract public static function run() {}
-	
 	public static function exists() { return true; }
+	public static function prepare() {}
+	public static function run() {}
 
 }

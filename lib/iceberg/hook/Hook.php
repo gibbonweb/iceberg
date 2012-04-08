@@ -15,7 +15,7 @@ class Hook {
 	public static function call($hook) {
 		$path = str_replace("(hook)", ucfirst($hook), static::$namespace);
 
-		$exists = @call_user_func("$path::exists");
+		$exists = call_user_func("$path::exists");
 		if (!$exists)
 			return false;
 

@@ -20,8 +20,6 @@ class GenerateCommand extends AbstractCommand {
 	
 		if(!isset($args[0]))
 			throw new ParameterNotFoundException("Required parameter \"name\" not found.");
-			
-		Hook::call("preGenerate");
 		
 		if ($args[0] == "--all") {
 			$posts = scandir(ROOT_DIR.str_replace("(name)", "", Config::getVal("article", "input")));
@@ -31,6 +29,8 @@ class GenerateCommand extends AbstractCommand {
 			}
 			return 0;
 		}
+		
+		Hook::call("preGenerate");
 		
 		$inputFile = ROOT_DIR.str_replace("(name)", $args[0], Config::getVal("article", "input"))."/".$args[0].".md";
 		$inputFileData = @file_get_contents($inputFile);
@@ -85,7 +85,6 @@ class GenerateCommand extends AbstractCommand {
 		echo "-> Successfully created \"" .$args[0]. "\" at \"$templateOutputPath\".", PHP_EOL;
 		
 		Hook::call("postGenerate");
-
 	}
 
 }
