@@ -17,7 +17,7 @@ class Hook {
 
 		$exists = @call_user_func("$path::exists");
 		if (!$exists)
-			throw new HookNotFoundException("Hook \"" .$hook. "\" not found.");
+			return false;
 
 		call_user_func("$path::prepare");
 		call_user_func("$path::run");

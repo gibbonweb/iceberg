@@ -2,6 +2,7 @@
 
 namespace command;
 
+use iceberg\hook\Hook;
 use iceberg\parser\Spyc;
 use iceberg\config\Config;
 use iceberg\parser\Markdown;
@@ -19,6 +20,8 @@ class GenerateCommand extends AbstractCommand {
 	
 		if(!isset($args[0]))
 			throw new ParameterNotFoundException("Required parameter \"name\" not found.");
+			
+		Hook::call("preGenerate");
 		
 		if ($args[0] == "--all") {
 			$posts = scandir(ROOT_DIR.str_replace("(name)", "", Config::getVal("article", "input")));
@@ -79,7 +82,9 @@ class GenerateCommand extends AbstractCommand {
 		if (is_dir($postAssets))
 			FileSystem::recursiveCopy($postAssets, $postAssetsOutput, true);
 		
-		echo "-> Successfully created \"" .$args[0]. "\" at \"$templateOutputPath\".";
+		echo "-> Successfully created \"" .$args[0]. "\" at \"$templateOutputPath\".", PHP_EOL;
+		
+		Hook::call("postGenerate");
 
 	}
 

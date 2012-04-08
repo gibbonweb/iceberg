@@ -29,5 +29,3 @@ Hook::setNamespace("hook\(hook)Hook");
 
 Command::setNamespace("command\(command)Command");
 Command::load($argv);
-
-echo PHP_EOL;
