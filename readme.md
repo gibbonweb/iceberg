@@ -12,8 +12,7 @@ Contents
 + Writing Hooks
 + Thanks & Credits
 + License
-
-***The manual file contains a description of every command that is available.***
++ Manual (External File)
 
 Installing
 ----------
@@ -33,7 +32,7 @@ Getting Started
 So, you've installed Iceberg. That wasn't too hard, but what now? Well, you'll want to create a new post of course!
 To do this you will need to create a new directory in your data folder. Note that the directory's name will represent the URL of the post.
 
-    $ cd _data
+    $ cd data
     $ mkdir this-is-my-new-post			# This will later become http://your.blog/articles/this-is-my-new-post
 
 Inside that, you'll want to create your markdown file, as well as an assets folder if you're going to be using images in your post. This can be done in any file browser or editor. Careful, as the name of your markdown file should be the same as the parent directory:
@@ -66,7 +65,7 @@ Iceberg currently has the following hooks:
 + **preGenerate:** this hook is run before any compiling of posts is done. It will be done for each individual file if the ``--all`` parameter is used.
 + **postGenerate:** this hook is run after any compiling of posts is done. It will be done for each individual file if the ``--all`` parameter is used.
 
-To create a hook, simply create a file in the ``lib/hook`` dir, and put the corresponding code inside. The name of the hook *file* should be ucfirst, and have "Hook" appended to it.
+To create a hook, simply create a file in the ``lib/hook`` dir, and put the corresponding code inside. The name of the hook should be ucfirs, and have "Hook" appended to it.
 For example:
 	
 	lib/hook/PostGenerateHook.php
@@ -83,6 +82,11 @@ For example:
 		
 		// The command you want to run
 		protected static $command = "mkdir example";
+		
+		// Note that you can also set an array of commands to be run, such as
+		//     protected static $command = array("mkdir example", "mkdir example2");
+		// These will be run in order
+		
 		
 		public static function prepare() {
 			// Anything that should be run before the actual shell hook is run.
@@ -128,4 +132,5 @@ Iceberg is licensed under the [WTFPL](http://sam.zoy.org/wtfpl/COPYING) license,
 However, this is not the case of external libraries used in Iceberg, so please see the licenses of PHP-Markdown and SPYC which are located at the top / bottom of the files used.
 
 One thing that should be noted as well (more of a support thing) is that I don't and will not offer support for the installation of iceberg. There will be no backwards compatibilty on this main branch. 
+
 As far as I know, it should work on any PHP 5.3 version (not 5.2, as it requires certain 5.3 specific features), but if it doesn't work, you're on your own. **Of course, I will gladly take bug reports and fix them as long as it is a problem in the code itself. Just make sure the error is replicable in PHP 5.3.8**
