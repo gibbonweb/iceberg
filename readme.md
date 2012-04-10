@@ -4,8 +4,21 @@ Iceberg is a static file blogging platform, built around **Markdown**. It runs o
 
 Iceberg is still in active development, so using at this time is not recommended and bugs are to be expected in all versions to come. Iceberg is being developed by **Cyril Mengin** (Twitter: [@cyrilmengin](http://twitter.com/cyrilmengin)) as well as various other contributors.
 
+Contents
+--------
+
++ Installing
++ Getting Started
++ Writing Hooks
++ Thanks & Credits
++ License
+
+***The manual file contains a description of every command that is available.***
+
 Installing
 ----------
+
+*Iceberg was built on PHP 5.3.8, however, any of the 5.3 updates should be fine.*
 
 Installing Iceberg is very simple, as it doesn't require any specific libraries or extensions, other than the ones that are already installed. Git can be nice to have, but is not required. To install Iceberg, just navigate to wherever you want to install Iceberg, and run the following inside a terminal:
 
@@ -113,3 +126,6 @@ License
 Iceberg is licensed under the [WTFPL](http://sam.zoy.org/wtfpl/COPYING) license, so go wild, do what you want.
 
 However, this is not the case of external libraries used in Iceberg, so please see the licenses of PHP-Markdown and SPYC which are located at the top / bottom of the files used.
+
+One thing that should be noted as well (more of a support thing) is that I don't and will not offer support for the installation of iceberg. There will be no backwards compatibilty on this main branch. 
+As far as I know, it should work on any PHP 5.3 version (not 5.2, as it requires certain 5.3 specific features), but if it doesn't work, you're on your own. **Of course, I will gladly take bug reports and fix them as long as it is a problem in the code itself. Just make sure the error is replicable in PHP 5.3.8**
