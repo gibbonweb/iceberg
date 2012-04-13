@@ -10,7 +10,7 @@ abstract class AbstractShellHook {
 	protected static $command;
 	protected static $path;
 	
-	public static function prepare() { }
+	public static function prepare($posts) { }
 	public static function exists() { return true; }
 	
 	public static function run() {

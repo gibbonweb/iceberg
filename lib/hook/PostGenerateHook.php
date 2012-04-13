@@ -9,7 +9,7 @@ class PostGenerateHook extends AbstractShellHook {
 	protected static $path = "";
 	protected static $command = "mkdir folderCreatedByShellHook";
 	
-	public static function prepare() {
+	public static function prepare($posts) {
 		static::$path = ROOT_DIR."output";
 	}
 

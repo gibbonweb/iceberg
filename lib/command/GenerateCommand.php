@@ -117,7 +117,7 @@ class GenerateCommand extends AbstractCommand {
 		
 		echo "-> Successfully created \"" .$args[0]. "\" at \"$templateOutputPath\".", PHP_EOL;
 		
-		Hook::call("postGenerate");
+		Hook::call("postGenerate", $postsClean);
 	}
 
 }

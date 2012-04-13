@@ -12,15 +12,15 @@ class Hook {
 		static::$namespace = $namespace;
 	}
 	
-	public static function call($hook) {
+	public static function call($hook, $pass = false) {
 		$path = str_replace("(hook)", ucfirst($hook), static::$namespace);
 
-		$exists = @call_user_func("$path::exists");
+		$exists = call_user_func("$path::exists");
 		if (!$exists)
 			return false;
 
-		call_user_func("$path::prepare");
-		call_user_func("$path::run");
+		call_user_func("$path::prepare", $pass);
+		call_user_func("$path::run", $pass);
 	}
 
 }

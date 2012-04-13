@@ -98,7 +98,7 @@ For example:
 		// These will be run in order
 		
 		
-		public static function prepare() {
+		public static function prepare($posts) {
 			// Anything that should be run before the actual shell hook is run.
 			// In this case, we're setting the path where the shell hook should be run.
 			// I'm too lazy to try and figure out the relative path, so why not make it absolute?
@@ -119,7 +119,7 @@ or, for a pure-PHP hook;
 	
 	class PreGenerateHook extends AbstractCodeHook {
 	
-		public static function run() {
+		public static function run($posts) {
 			echo "The pre-generate hook was run! (Don't worry, it's harmless)", PHP_EOL;
 		}
 	
