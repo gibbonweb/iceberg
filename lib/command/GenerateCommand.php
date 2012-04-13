@@ -7,6 +7,7 @@ use iceberg\parser\Spyc;
 use iceberg\config\Config;
 use iceberg\parser\Markdown;
 use iceberg\template\Template;
+use iceberg\database\Database;
 use iceberg\filesystem\FileSystem;
 use iceberg\command\AbstractCommand;
 use iceberg\command\exceptions\ParameterNotFoundException;
@@ -15,11 +16,18 @@ use iceberg\command\exceptions\InputFileNotFoundException;
 class GenerateCommand extends AbstractCommand {
 
 	private static $path = false;
+	private static $sqlStructure = "lib/command/structure.sql";
 
 	public static function run($args = array()) {
 	
 		if(!isset($args[0]))
 			throw new ParameterNotFoundException("Required parameter \"name\" not found.");
+		
+		if (!file_exists(ROOT_DIR.static::$sqlStructure))
+			throw new InputFileNotFoundException("Database structure file not found.");
+	
+		$sqlStructureContent = file_get_contents(ROOT_DIR.static::$sqlStructure);
+		Database::load($sqlStructureContent, ROOT_DIR.Config::getVal("general", "database"));
 		
 		if ($args[0] == "--all") {
 			$posts = scandir(ROOT_DIR.str_replace("(name)", "", Config::getVal("article", "input")));
@@ -43,23 +51,35 @@ class GenerateCommand extends AbstractCommand {
 		$markdown = new Markdown;
 		
 		$post = array();
-		$post["info"] = Spyc::YAMLLoadString(trim($meta));
-		$post["info"]["time"] = filemtime($inputFile);
-		$post["info"]["path"] = Config::getVal("general", "path");
-		$post["content"] = $markdown->transform($postContent);
+		$post["data"] = Spyc::YAMLLoadString(trim($meta));
+		$post["data"]["time"] = filemtime($inputFile);
+		$post["data"]["path"] = Config::getVal("general", "path");
+		$post["text"] = $markdown->transform($postContent);
+		$post["hash"] = md5($post["data"]["title"]);
 		
-		if (!isset($post["info"]["layout"]))
+		$postQueryData = $post;
+		$postQueryData["data"] = json_encode($post["data"]);
+		
+		Database::query("DELETE FROM data WHERE hash = '" . $postQueryData["hash"] . "'");
+		$postQuery = "INSERT OR IGNORE INTO data (hash, text, data) VALUES ('"
+		             .$postQueryData["hash"]
+		             ."','"
+		             .str_replace("\n", "", $postQueryData["text"])
+		             ."','"
+		             .$postQueryData["data"]."')";
+		Database::query($postQuery);
+		
+		if (!isset($post["data"]["layout"]))
 			throw new ParameterNotFoundException("Required front-matter \"layout\" parameter not found.");
-	
 	
 		$filesToCompile = array();
 	
-		$templatePath = ROOT_DIR.str_replace("(layout)", $post["info"]["layout"], Config::getVal("article", "layouts"));
+		$templatePath = ROOT_DIR.str_replace("(layout)", $post["data"]["layout"], Config::getVal("article", "layouts"));
 		$templateOutputPath = ROOT_DIR.str_replace("(name)", $args[0], Config::getVal("article", "output"))."/index.html";
 	
 		$filesToCompile[$templatePath] = $templateOutputPath;
 		
-		$reloadFilePath = ROOT_DIR.str_replace("(layout)", $post["info"]["layout"], Config::getVal("article", "reloads"));
+		$reloadFilePath = ROOT_DIR.str_replace("(layout)", $post["data"]["layout"], Config::getVal("article", "reloads"));
 		$reloadFilesContent = @file_get_contents($reloadFilePath);
 		if (!!$reloadFilesContent) {
 			$reloadFileParsed = Spyc::YAMLLoadString(trim($reloadFilesContent));
@@ -70,15 +90,22 @@ class GenerateCommand extends AbstractCommand {
 				$filesToCompile[$template] = $output;
 			}
 		}
+		
+		$posts = Database::query("SELECT * FROM data");
+		$postsClean = array();
+		for ($i = 0; $i < count($posts); $i++) {
+			if (!($i % 2))
+				$postsClean[] = array("text" => $posts[$i]["text"], "data" => get_object_vars(json_decode($posts[$i]["data"])));
+		}
 	
 		foreach ($filesToCompile as $template => $output) {
-			$templateParsed = Template::load($template, $post);
+			$templateParsed = Template::load($template, $postsClean);
 			FileSystem::writeFile($output, $templateParsed);
 		}
 	
 		$postAssets = ROOT_DIR.str_replace("(name)", $args[0], Config::getVal("article", "input"))."/assets";
 		$postAssetsOutput = ROOT_DIR.str_replace("(name)", $args[0], Config::getVal("article", "output"))."/assets";
-			
+
 		if (is_dir($postAssets))
 			FileSystem::recursiveCopy($postAssets, $postAssetsOutput, true);
 		

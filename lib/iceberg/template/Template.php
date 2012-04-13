@@ -12,7 +12,7 @@ class Template {
 			throw new TemplateFileNotFoundException("Template file \"$template\" not found.");
 		
 		ob_start();
-		$post = &$data;
+		$posts = &$data;
 		
 		include $template;
 

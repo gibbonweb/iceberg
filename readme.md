@@ -1,14 +1,14 @@
-# Iceberg
+# Iceberg v1
 
 Iceberg is a static file blogging platform, built around **Markdown**. It runs on PHP 5.3+, and unlike many other alternatives, it doesn't require any external libraries or dependencies. It's as simple download, run the script, and you've got yourself a static blog.
-
-Iceberg is still in active development, so using at this time is not recommended and bugs are to be expected in all versions to come. Iceberg is being developed by **Cyril Mengin** (Twitter: [@cyrilmengin](http://twitter.com/cyrilmengin)) as well as various other contributors.
+Iceberg is being developed by **Cyril Mengin** (Twitter: [@cyrilmengin](http://twitter.com/cyrilmengin)) as well as various other contributors.
 
 Contents
 --------
 
 + Installing
 + Getting Started
++ Writing Themes
 + Writing Hooks
 + Thanks & Credits
 + License
@@ -55,6 +55,15 @@ And that's it! You can now write your article underneath that. Once you've finis
     -> this-is-my-new-post successfully generated at output/articles/this-is-my-new-post/index.html
     
 Your new article should now be awaiting you in the output dir!
+
+Writing Themes
+--------------
+
+Writing themes with Iceberg is really easy. It's simply an HTML file containing some PHP. When you set a "layout" file in your post, it will generate the corresponding ``<layout name>.html.tpl`` file (or however you have setup Iceberg to work).
+It will be given a single variable; the ``$posts`` variable, which is an array of *all* the posts. The easiest way to get the last post (the one to be compiled) is through the ``end($posts)`` method, which will return the last post array. You can then grab the informations from there.
+
+Another feature of Iceberg is the "reload" file. This is a file named ``<layout name>.reload.yml`` (with the default config). When you run the generate command, before compiling the actual post layout, it will read this file to see if there are any other files that should be reloaded.
+If there are some, it will compile them as well, with the new ``$posts`` array. This can be useful, for example, for updating the post list, or an RSS feed.
 
 Writing Hooks
 -------------
