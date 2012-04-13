@@ -46,6 +46,7 @@ Okay, so that's all the files you'll need to create. If you're using images, sti
     -----
     title: This is my new post!
     author: Cyril Mengin
+	slug: this-is-my-new-post		# This is the "slug" URL for your post
     layout: post
     -----
 
