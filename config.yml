@@ -5,7 +5,9 @@ general:
 
 	logging: iceberg.log                                    # Where Iceberg should log errors. Set to false for none
 	database: iceberg.db                                    # The path of the SQLite database that will contain post info
+
 	output: output                                          # The root for the output directory
+	layout: layouts/default                                 # The root of the layouts directory to be used
 
 article:
 

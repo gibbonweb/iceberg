@@ -84,10 +84,16 @@ class GenerateCommand extends AbstractCommand {
 		if (!!$reloadFilesContent) {
 			$reloadFileParsed = Spyc::YAMLLoadString(trim($reloadFilesContent));
 			foreach ($reloadFileParsed as $template => $output) {
-				$output = ROOT_DIR.Config::getVal("general", "output").DIRECTORY_SEPARATOR.$output;
-				$template = ROOT_DIR.str_replace("(layout)", $template, Config::getVal("article", "layouts"));
 				
-				$filesToCompile[$template] = $output;
+				$output = ROOT_DIR.Config::getVal("general", "output").DIRECTORY_SEPARATOR.$output;
+			
+				if (is_dir(ROOT_DIR.Config::getVal("general", "layout").DIRECTORY_SEPARATOR.$template)) {
+					FileSystem::recursiveCopy(ROOT_DIR.Config::getVal("general", "layout").DIRECTORY_SEPARATOR.$template, $output);
+				} else {
+					$template = ROOT_DIR.str_replace("(layout)", $template, Config::getVal("article", "layouts"));
+					$filesToCompile[$template] = $output;
+				}
+
 			}
 		}
 		
