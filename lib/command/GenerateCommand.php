@@ -61,12 +61,12 @@ class GenerateCommand extends AbstractCommand {
 		$postQueryData["data"] = json_encode($post["data"]);
 		
 		Database::query("DELETE FROM data WHERE hash = '" . $postQueryData["hash"] . "'");
-		$postQuery = "INSERT OR IGNORE INTO data (hash, text, data) VALUES ('"
+		$postQuery = "INSERT OR IGNORE INTO data (hash, text, data) VALUES (\""
 		             .$postQueryData["hash"]
-		             ."','"
-		             .str_replace("\n", "", $postQueryData["text"])
-		             ."','"
-		             .$postQueryData["data"]."')";
+		             ."\", \""
+		             .str_replace("\n", "", htmlentities($postQueryData["text"]))
+		             ."\", \""
+		             .htmlentities(addslashes($postQueryData["data"]))."\")";
 		Database::query($postQuery);
 		
 		if (!isset($post["data"]["layout"]))
@@ -101,7 +101,8 @@ class GenerateCommand extends AbstractCommand {
 		$postsClean = array();
 		for ($i = 0; $i < count($posts); $i++) {
 			if (!($i % 2))
-				$postsClean[] = array("text" => $posts[$i]["text"], "data" => get_object_vars(json_decode($posts[$i]["data"])));
+				$postsClean[] = array("text" => html_entity_decode($posts[$i]["text"]),
+				                      "data" => get_object_vars(json_decode(stripslashes(html_entity_decode($posts[$i]["data"])))));
 		}
 	
 		foreach ($filesToCompile as $template => $output) {
