@@ -7,76 +7,107 @@ Contents
 --------
 
 + Installing
-+ Getting Started
++ Creating a Post
 + Writing Themes
 + Writing Hooks
 + Thanks & Credits
 + License
 + Manual (External File)
 
+*Note that all examples here are made supposing that you are using the latest version of Iceberg, on the right platform, and that the configuration is the same as the default one (roughly).*
+
 Installing
 ----------
 
 *Iceberg was built on PHP 5.3.8, however, any of the 5.3 updates should be fine.*
 
-Installing Iceberg is very simple, as it doesn't require any specific libraries or extensions, other than the ones that are already installed. Git can be nice to have, but is not required. To install Iceberg, just navigate to wherever you want to install Iceberg, and run the following inside a terminal:
+Installing Iceberg is very simple, as it doesn't require any specific libraries or extensions, other than the ones that are already installed. Git can be nice to have, but is not required. If you're worried it might not work, here's a quick list of what's used:
+
++ Namespaces
++ Output Buffers
++ SQLite3
+
+To install Iceberg, just navigate to wherever you want to install Iceberg, and run the following inside a terminal:
 
     $ git clone git://github.com/cyrilmengin/iceberg.git TestBlog
     $ cd TestBlog
 
-And, that's it! You should be able to go straight into blogging at this stage, but you might want to mess around with the settings to change the output / source directory first, as well as get a proper layout/ theme.
+If you don't have git or don't want to use it, simply use Github's download feature (should be up top).
 
-Getting Started
+And, that's it! You should now have a directory with a ``data``, ``lib`` and ``layouts`` directory. You've "installed" Iceberg properly, so read on!
+
+Creating a Post
 ---------------
 
 So, you've installed Iceberg. That wasn't too hard, but what now? Well, you'll want to create a new post of course!
-To do this you will need to create a new directory in your data folder. Note that the directory's name will represent the URL of the post.
+To do this you will need to create a new directory in your data folder.
 
-    $ cd data
-    $ mkdir this-is-my-new-post			# This will later become http://your.blog/articles/this-is-my-new-post
-
-Inside that, you'll want to create your markdown file, as well as an assets folder if you're going to be using images in your post. This can be done in any file browser or editor. Careful, as the name of your markdown file should be the same as the parent directory:
-
-    $ cd this-is-my-new-post
-    $ touch this-is-my-new-post.md
-    $ mkdir assets
-
-Okay, so that's all the files you'll need to create. If you're using images, stick them all inside the assets directory -- it will later be copied alongside your article. Now, last little bit before you can actually write your post, front-matter! This is just some information that should be placed at the top of the markdown file, in the following format:
+To do that, open your favorite text editor, and create a new file with the following:
 
     -----
     title: This is my new post!
     author: Cyril Mengin
-	slug: this-is-my-new-post		# This is the "slug" URL for your post
+	slug: this-is-my-new-post
     layout: post
     -----
+    
+    # My New Post
+    This post was made using Iceberg and Markdown!
 
-And that's it! You can now write your article underneath that. Once you've finished writing, you're ready to generate the static files. Go back to the root of the iceberg install, and type this:
+That little chunk at the top of the file is very important. Here's a little description of what the values do:
+
++ ``title`` : Simple enough, this will just be the title of your post
++ ``author`` : This one is easy as well - just the name of the author of the post
++ ``slug`` : This will be the url of your post. Let's say your slug is ``this-is-my-new-post``, your post will appear at ``http://example.com/article/this-is-my-new-post``.
++ ``layout`` : This is the name of the template you want to use for this specific post. You can read more about it in the **writting themes** section below.
++ **Others** : Yep, you can also have your custom values in there. Let's say you want to have a custom tag to use in one of your layouts -- you can set it there.
+
+And that's it! You can now write your article underneath that. Once you've finished writing, you're ready to generate the static files. 
+
+First of all, you'll want to save the file as ``<data-dir>/<slug>/<slug>.md``. 
+``<data-dir>/`` stands for the directory that contains all the posts. By default, this is the "data" directory in the iceberg root.
+``<slug>`` stands for the "slug" name of your post. This should be the same as was set inside the post front-matter.
+
+Now, go back to the root of the iceberg install, and type this:
 
     $ ./iceberg generate this-is-my-new-post
     -> this-is-my-new-post successfully generated at output/articles/this-is-my-new-post/index.html
-    
-Your new article should now be awaiting you in the output dir!
+
+Your new article should now be awaiting you in the output dir! However, you'll notice that there isn't any styling, that your blog looks ugly! Well, that's next, so read on once again.
 
 Writing Themes
 --------------
 
-Writing themes with Iceberg is really easy. It's simply an HTML file containing some PHP. When you set a "layout" file in your post, it will generate the corresponding ``<layout name>.html.tpl`` file (or however you have setup Iceberg to work).
+Writing themes with Iceberg is really easy. It's simply an HTML file containing some PHP. When you set a "layout" file in your post, it will generate the corresponding ``<layout name>.html.tpl`` file inside your layouts directory.
 It will be given a single variable; the ``$posts`` variable, which is an array of *all* the posts. The easiest way to get the last post (the one to be compiled) is through the ``end($posts)`` method, which will return the last post array. You can then grab the informations from there.
+The easiest way to see how this works is to look at the default themes, included in Iceberg. You can then work atop of that.
 
-Another feature of Iceberg is the "reload" file. This is a file named ``<layout name>.reload.yml`` (with the default config). When you run the generate command, before compiling the actual post layout, it will read this file to see if there are any other files that should be reloaded.
+Another feature of Iceberg is the "reload" file. This is a file named ``<layout name>.reload.yml`` at the same level as the corresponding layout file. When you run the generate command, before compiling the actual post layout, it will read this file to see if there are any other files that should be reloaded.
 If there are some, it will compile them as well, with the new ``$posts`` array. This can be useful, for example, for updating the post list, or an RSS feed.
+This file also supports directories. Let's say you want to copy a directory containing some CSS files, it can do that as well. Here's the general syntax:
+
+	# template: output name
+	index: index.html
+	rss: feed.rss
+	
+	# directory: output path
+	static: static
 
 Writing Hooks
 -------------
 
 Iceberg has a hook feature, similar to git. Basically, hooks are scripts that will be run at specific moments during the execution of a command.
+They can be useful for (for example) uploading your new blog posts automatically, or compiling LESS / HAML / etc files.
+
 Iceberg currently has the following hooks:
 
-+ **preGenerate:** this hook is run before any compiling of posts is done. It will be done for each individual file if the ``--all`` parameter is used.
-+ **postGenerate:** this hook is run after any compiling of posts is done. It will be done for each individual file if the ``--all`` parameter is used.
+*Note that these hooks will be run for each individual file if the ``--all`` parameter is used. If the --all param finds 3 posts, it will run these hooks 3 times.*
 
-To create a hook, simply create a file in the ``lib/hook`` dir, and put the corresponding code inside. The name of the hook should be ucfirs, and have "Hook" appended to it.
-For example:
++ **preGenerate:** this hook is run before any compiling of posts is done.
++ **postGenerate:** this hook is run after any compiling of posts is done. 
+
+To create a hook, simply create a file in the ``lib/hook`` directory, and put the corresponding code inside. The name of the hook should be the same as the file name, be ucfirst, and have "Hook" appended to it.
+All hooks should extend from either the ``AbstractShellHook`` class, if you want to run a command line script, or the ``AbstractCodeHook`` class, if you want a PHP code hook. For example:
 	
 	lib/hook/PostGenerateHook.php
 	
@@ -88,26 +119,23 @@ For example:
 	
 	class PostGenerateHook extends AbstractShellHook {
 	
+		/* This is the path in which the hook commands will be run.   */
+		/* Iceberg will chdir() into this before running the scripts. */
+		/
 		protected static $path = "";
 		
-		// The command you want to run
+		/* This is the command you will want to run.                  */
+		/* Note that this can also be an array of (strings) commands. */
 		protected static $command = "mkdir example";
 		
-		// Note that you can also set an array of commands to be run, such as
-		//     protected static $command = array("mkdir example", "mkdir example2");
-		// These will be run in order
-		
-		
 		public static function prepare($posts) {
-			// Anything that should be run before the actual shell hook is run.
-			// In this case, we're setting the path where the shell hook should be run.
-			// I'm too lazy to try and figure out the relative path, so why not make it absolute?
-			static::$path = ROOT_DIR."output";
+			/* This function will be called before the actual command is run. */
+			/* The $posts param is an array containing all the posts.         */
 		}
 	
 	}
 	
-or, for a pure-PHP hook;
+Another example, this time for a code hook:
 
 	lib/hook/PreGenerateHook.php
 	
@@ -120,7 +148,8 @@ or, for a pure-PHP hook;
 	class PreGenerateHook extends AbstractCodeHook {
 	
 		public static function run($posts) {
-			echo "The pre-generate hook was run! (Don't worry, it's harmless)", PHP_EOL;
+			/* This function will be called.                          */
+			/* The $posts param is an array containing all the posts. */
 		}
 	
 	}
@@ -140,7 +169,3 @@ License
 Iceberg is licensed under the [WTFPL](http://sam.zoy.org/wtfpl/COPYING) license, so go wild, do what you want.
 
 However, this is not the case of external libraries used in Iceberg, so please see the licenses of PHP-Markdown and SPYC which are located at the top / bottom of the files used.
-
-One thing that should be noted as well (more of a support thing) is that I don't and will not offer support for the installation of iceberg. There will be no backwards compatibilty on this main branch. 
-
-As far as I know, it should work on any PHP 5.3 version (not 5.2, as it requires certain 5.3 specific features), but if it doesn't work, you're on your own. **Of course, I will gladly take bug reports and fix them as long as it is a problem in the code itself. Just make sure the error is replicable in PHP 5.3.8**
