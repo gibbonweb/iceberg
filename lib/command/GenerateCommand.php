@@ -18,7 +18,7 @@ class GenerateCommand extends AbstractCommand {
 	private static $path = false;
 	private static $sqlStructure = "lib/command/structure.sql";
 
-	public static function run($args = array()) {
+	public static function run($args = array(), $runHook = true) {
 	
 		if(!isset($args[0]))
 			throw new ParameterNotFoundException("Required parameter \"name\" not found.");
@@ -29,16 +29,20 @@ class GenerateCommand extends AbstractCommand {
 		$sqlStructureContent = file_get_contents(ROOT_DIR.static::$sqlStructure);
 		Database::load($sqlStructureContent, ROOT_DIR.Config::getVal("general", "database"));
 		
+		if (in_array("--no-hook", $args))
+			$runHook = false;
+		
 		if ($args[0] == "--all") {
 			$posts = scandir(ROOT_DIR.str_replace("(name)", "", Config::getVal("article", "input")));
 			foreach ($posts as $post) {
 				if ($post[0] != ".")
-					static::run(array($post));
+					static::run(array($post), $runHook);
 			}
 			return 0;
 		}
 		
-		Hook::call("preGenerate");
+		if ($runHook)
+			Hook::call("preGenerate");
 		
 		$inputFile = ROOT_DIR.str_replace("(name)", $args[0], Config::getVal("article", "input"))."/".$args[0].".md";
 		$inputFileData = @file_get_contents($inputFile);
@@ -118,7 +122,8 @@ class GenerateCommand extends AbstractCommand {
 		
 		echo "-> Successfully created \"" .$args[0]. "\" at \"$templateOutputPath\".", PHP_EOL;
 		
-		Hook::call("postGenerate", $postsClean);
+		if ($runHook)
+			Hook::call("postGenerate", $postsClean);
 	}
 
 }

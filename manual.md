@@ -7,3 +7,7 @@ For example, running ``./iceberg generate hello-world`` would generate ``<articl
 
 This parameter replaces the article name parameter, and when run, it will run the generate function on all posts that are found in the post data directory.
 *Any hooks that would usually be triggered during the process with the plain command will be triggered for every post: if 3 posts are generated, the hooks will be run 3 times*
+
+# ``$ ./iceberg generate <article-name> --no-hook``
+
+The ``--no-hook`` parameter is optional, and is placed after the article name (which can also be replaced by ``--all``). When added, any hooks that would usually be run will not be.
