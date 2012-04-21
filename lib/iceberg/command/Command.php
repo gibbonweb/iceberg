@@ -6,6 +6,7 @@ use iceberg\command\exceptions\CommandNotFoundException;
 
 class Command {
 
+	public static $default = false;
 	public static $namespace = array();
 
 	public static function setNamespace($namespace) {
@@ -16,7 +17,7 @@ class Command {
 		$path = str_replace("(command)", ucfirst($args[1]), static::$namespace);
 		$passArgument = array_slice($args, 2);
 		
-		$exists = call_user_func("$path::exists", $passArgument);
+		$exists = @call_user_func("$path::exists", $passArgument);
 		if (!$exists)
 			throw new CommandNotFoundException("Command \"".$args[1]."\" not found.");
 
