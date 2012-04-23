@@ -79,9 +79,9 @@ class GenerateCommand extends AbstractCommand {
 		$filesToCompile = array();
 	
 		$templatePath = ROOT_DIR.str_replace("(layout)", $post["data"]["layout"], Config::getVal("article", "layouts"));
-		$templateOutputPath = ROOT_DIR.str_replace("(name)", $args[0], Config::getVal("article", "output"))."/index.html";
+		$templateOutputPath = str_replace("(name)", $args[0], Config::getVal("article", "output"))."/index.html";
 	
-		$filesToCompile[$templatePath] = $templateOutputPath;
+		$filesToCompile[$templatePath] = ROOT_DIR.$templateOutputPath;
 		
 		$reloadFilePath = ROOT_DIR.str_replace("(layout)", $post["data"]["layout"], Config::getVal("article", "reloads"));
 		$reloadFilesContent = @file_get_contents($reloadFilePath);
@@ -120,7 +120,7 @@ class GenerateCommand extends AbstractCommand {
 		if (is_dir($postAssets))
 			FileSystem::recursiveCopy($postAssets, $postAssetsOutput, true);
 		
-		echo "-> Successfully created \"" .$args[0]. "\" at \"$templateOutputPath\".", PHP_EOL;
+		echo "-> Successfully created \"" .$args[0]. "\" at \"$templateOutputPath\"", PHP_EOL;
 		
 		if ($runHook)
 			Hook::call("postGenerate", $postsClean);
