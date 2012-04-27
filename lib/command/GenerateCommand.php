@@ -79,7 +79,7 @@ class GenerateCommand extends AbstractCommand {
 		$filesToCompile = array();
 	
 		$templatePath = ROOT_DIR.str_replace("(layout)", $post["data"]["layout"], Config::getVal("article", "layouts"));
-		$templateOutputPath = str_replace("(name)", $args[0], Config::getVal("article", "output"))."/index.html";
+		$templateOutputPath = str_replace("(name)", $post["data"]["slug"], Config::getVal("article", "output"))."/index.html";
 	
 		$filesToCompile[$templatePath] = ROOT_DIR.$templateOutputPath;
 		
