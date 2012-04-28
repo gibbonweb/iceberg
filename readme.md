@@ -1,6 +1,6 @@
 # Iceberg v1
 
-Iceberg is a static file blogging platform, built around **Markdown**. It runs on PHP 5.3+, and unlike many other alternatives, it doesn't require any external libraries or dependencies. It's as simple download, run the script, and you've got yourself a static blog.
+Iceberg is a static file blogging platform, built around **Markdown** (there is support for Markdown Plus). It runs on PHP 5.3+, and unlike many other alternatives, it doesn't require any external libraries or dependencies. It's as simple download, run the script, and you've got yourself a static blog.
 Iceberg is being developed by **Cyril Mengin** (Twitter: [@cyrilmengin](http://twitter.com/cyrilmengin)) as well as various other contributors.
 
 Contents
@@ -154,6 +154,8 @@ Another example, this time for a code hook:
 	}
 	
 (Both these examples are actually placeholder hooks, and they're already part of Iceberg, so you can refer to them / edit them right in the hooks directory.)
+
+On the other hand, if you'd like to stop any hooks from running during the execution of a command, simply append the ``--no-hook`` parameter to the command (see the manual file for more information).
 
 Thanks & Credits
 ----------------
