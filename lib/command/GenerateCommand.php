@@ -5,7 +5,7 @@ namespace command;
 use iceberg\hook\Hook;
 use iceberg\parser\Spyc;
 use iceberg\config\Config;
-use iceberg\parser\Markdown;
+use iceberg\parser\MarkdownExtra;
 use iceberg\template\Template;
 use iceberg\database\Database;
 use iceberg\filesystem\FileSystem;
@@ -52,7 +52,7 @@ class GenerateCommand extends AbstractCommand {
 		
 		list($meta, $postContent) = array_slice(explode("-----", $inputFileData), 1);
 		
-		$markdown = new Markdown;
+		$markdown = new MarkdownExtra;
 		
 		$post = array();
 		$post["data"] = Spyc::YAMLLoadString(trim($meta));
