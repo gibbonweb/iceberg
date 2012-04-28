@@ -2,13 +2,14 @@ general:
 
 	path: http://www.example.com                            # The url that your blog will be visible
 	timezone: Europe/Paris                                  # See http://php.net/manual/en/timezones.php
+	author: Cyril Mengin                                    # The author of all posts (can be overwritten in the posts)
 
 	logging: iceberg.log                                    # Where Iceberg should log errors. Set to false for none
 	database: iceberg.db                                    # The path of the SQLite database that will contain post info
 
 	output: output                                          # The root for the output directory
 	layout: layouts/default                                 # The root of the layouts directory to be used
-
+	
 article:
 
 	input: data/(name)                                      # The path of the article (name) = article name

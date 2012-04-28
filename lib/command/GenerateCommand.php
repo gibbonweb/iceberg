@@ -61,6 +61,9 @@ class GenerateCommand extends AbstractCommand {
 		$post["text"] = $markdown->transform($postContent);
 		$post["hash"] = md5($post["data"]["title"]);
 		
+		if (!isset($post["data"]["author"]))
+			$post["data"]["author"] = Config::getVal("general", "author");
+		
 		$postQueryData = $post;
 		$postQueryData["data"] = json_encode($post["data"]);
 		

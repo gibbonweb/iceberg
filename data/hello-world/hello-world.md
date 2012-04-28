@@ -1,7 +1,6 @@
 -----
 title: Hello World
 slug: hello-world
-author: Cyril Mengin
 layout: post
 -----
 
