@@ -162,9 +162,11 @@ On the other hand, if you'd like to stop any hooks from running during the execu
 Thanks & Credits
 ----------------
 
-**[Michel Fortin](https://github.com/michelf)** for php-markdown, used to  parse Markdown
+**[Michel Fortin](https://github.com/michelf)** for php-markdown, used to  parse Markdown.
 
-The **[SPYC Project](http://code.google.com/p/spyc/)** used for parsing YAML
+The **[SPYC Project](http://code.google.com/p/spyc/)** used for parsing YAML.
+
+**[Twig](http://twig.sensiolabs.org/)** which is being used for templating.
 
 License
 -------
