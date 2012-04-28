@@ -3,7 +3,7 @@
         <head>
             
             <title>Example Blog</title>
-            <link rel="stylehseet" href="<?=$post[0]["data"]["path"]?>/media/css/style.css">
+            <link rel="stylesheet" href="<?=$posts[0]["data"]["path"]?>media/css/style.css">
             
         </head>
         <body>
@@ -15,7 +15,7 @@
             <ul>
             	<?php foreach ($posts as $post) { ?>
             	<li>
-            		<a href="<?=$post["data"]["path"]?>/article/<?=$post["data"]["slug"]?>">
+            		<a href="<?=$post["data"]["path"]?>article/<?=$post["data"]["slug"]?>">
             			<?=$post["data"]["title"]?>
             		</a>
             	</li>

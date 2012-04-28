@@ -67,6 +67,8 @@ First of all, you'll want to save the file as ``<data-dir>/<slug>/<slug>.md``.
 ``<data-dir>/`` stands for the directory that contains all the posts. By default, this is the "data" directory in the iceberg root.
 ``<slug>`` stands for the "slug" name of your post. This should be the same as was set inside the post front-matter.
 
+(If you want to have images, or files attached to your blog post, create an ``assets`` dir inside your article directory, and put them all inside there. Then link to them, *relative* of the post itself, so ``![...](assets/image.png)`` instead of putting a huge path. Iceberg will then expand this into an absolute path.
+
 Now, go back to the root of the iceberg install, and type this:
 
     $ ./iceberg generate this-is-my-new-post

@@ -4,7 +4,7 @@
         <head>
             
             <title><?=$post["data"]["title"]?></title>
-            <link rel="stylehseet" href="<?=$post["data"]["path"]?>/media/css/style.css">
+            <link rel="stylesheet" href="<?=$post["data"]["path"]?>media/css/style.css">
             
         </head>
         <body>

@@ -64,6 +64,10 @@ class GenerateCommand extends AbstractCommand {
 		if (!isset($post["data"]["author"]))
 			$post["data"]["author"] = Config::getVal("general", "author");
 		
+		$absoluteAssetPath = Config::getVal("general", "path")
+		                    .str_replace("(name)", $post["data"]["slug"], Config::getVal("article", "output"));
+		$post["text"] = preg_replace('/="assets(.*)"/', "=\"".$absoluteAssetPath."/assets$1\"", $post["text"]);
+		
 		$postQueryData = $post;
 		$postQueryData["data"] = json_encode($post["data"]);
 		
@@ -82,7 +86,9 @@ class GenerateCommand extends AbstractCommand {
 		$filesToCompile = array();
 	
 		$templatePath = ROOT_DIR.str_replace("(layout)", $post["data"]["layout"], Config::getVal("article", "layouts"));
-		$templateOutputPath = str_replace("(name)", $post["data"]["slug"], Config::getVal("article", "output"))."/index.html";
+		$templateOutputPath = Config::getVal("general", "output")
+		                     .str_replace("(name)", $post["data"]["slug"], Config::getVal("article", "output"))
+		                     ."/index.html";
 	
 		$filesToCompile[$templatePath] = ROOT_DIR.$templateOutputPath;
 		
@@ -118,7 +124,10 @@ class GenerateCommand extends AbstractCommand {
 		}
 	
 		$postAssets = ROOT_DIR.str_replace("(name)", $args[0], Config::getVal("article", "input"))."/assets";
-		$postAssetsOutput = ROOT_DIR.str_replace("(name)", $args[0], Config::getVal("article", "output"))."/assets";
+		$postAssetsOutput = ROOT_DIR
+		                   .Config::getVal("general", "output")."/"
+		                   .str_replace("(name)", $post["data"]["slug"], Config::getVal("article", "output"))
+		                   ."/assets";
 
 		if (is_dir($postAssets))
 			FileSystem::recursiveCopy($postAssets, $postAssetsOutput, true);
