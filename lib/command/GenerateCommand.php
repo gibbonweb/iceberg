@@ -55,21 +55,21 @@ class GenerateCommand extends AbstractCommand {
 		$markdown = new MarkdownExtra;
 		
 		$post = array();
-		$post["data"] = Spyc::YAMLLoadString(trim($meta));
-		$post["data"]["time"] = filemtime($inputFile);
-		$post["data"]["path"] = Config::getVal("general", "path");
+		$post["info"] = Spyc::YAMLLoadString(trim($meta));
+		$post["info"]["time"] = filemtime($inputFile);
 		$post["text"] = $markdown->transform($postContent);
 		$post["hash"] = md5($post["data"]["title"]);
 		
-		if (!isset($post["data"]["author"]))
-			$post["data"]["author"] = Config::getVal("general", "author");
+		if (!isset($post["info"]["author"]))
+			$post["info"]["author"] = Config::getVal("general", "author");
 		
 		$absoluteAssetPath = Config::getVal("general", "path")
+		                    ."/"
 		                    .str_replace("(name)", $post["data"]["slug"], Config::getVal("article", "output"));
 		$post["text"] = preg_replace('/="assets(.*)"/', "=\"".$absoluteAssetPath."/assets$1\"", $post["text"]);
 		
 		$postQueryData = $post;
-		$postQueryData["data"] = json_encode($post["data"]);
+		$postQueryData["data"] = json_encode($post["info"]);
 		
 		Database::query("DELETE FROM data WHERE hash = '" . $postQueryData["hash"] . "'");
 		$postQuery = "INSERT OR IGNORE INTO data (hash, text, data) VALUES (\""
@@ -80,19 +80,19 @@ class GenerateCommand extends AbstractCommand {
 		             .htmlentities(addslashes($postQueryData["data"]))."\")";
 		Database::query($postQuery);
 		
-		if (!isset($post["data"]["layout"]))
+		if (!isset($post["info"]["layout"]))
 			throw new ParameterNotFoundException("Required front-matter \"layout\" parameter not found.");
 	
 		$filesToCompile = array();
 	
-		$templatePath = ROOT_DIR.str_replace("(layout)", $post["data"]["layout"], Config::getVal("article", "layouts"));
+		$templatePath = $post["info"]["layout"].".twig";
 		$templateOutputPath = Config::getVal("general", "output")
 		                     .str_replace("(name)", $post["data"]["slug"], Config::getVal("article", "output"))
-		                     ."/index.html";
+		                     ."index.html";
 	
 		$filesToCompile[$templatePath] = ROOT_DIR.$templateOutputPath;
 		
-		$reloadFilePath = ROOT_DIR.str_replace("(layout)", $post["data"]["layout"], Config::getVal("article", "reloads"));
+		$reloadFilePath = ROOT_DIR.Config::getVal("article", "layout").$post["info"]["layout"].".reload";
 		$reloadFilesContent = @file_get_contents($reloadFilePath);
 		if (!!$reloadFilesContent) {
 			$reloadFileParsed = Spyc::YAMLLoadString(trim($reloadFilesContent));
@@ -100,10 +100,10 @@ class GenerateCommand extends AbstractCommand {
 				
 				$output = ROOT_DIR.Config::getVal("general", "output").DIRECTORY_SEPARATOR.$output;
 			
-				if (is_dir(ROOT_DIR.Config::getVal("general", "layout").DIRECTORY_SEPARATOR.$template)) {
-					FileSystem::recursiveCopy(ROOT_DIR.Config::getVal("general", "layout").DIRECTORY_SEPARATOR.$template, $output, true);
+				if (is_dir(ROOT_DIR.Config::getVal("article", "layout").$template)) {
+					FileSystem::recursiveCopy(ROOT_DIR.Config::getVal("article", "layout").$template, $output, true);
 				} else {
-					$template = ROOT_DIR.str_replace("(layout)", $template, Config::getVal("article", "layouts"));
+					$template = "$template.twig";
 					$filesToCompile[$template] = $output;
 				}
 
@@ -111,15 +111,24 @@ class GenerateCommand extends AbstractCommand {
 		}
 		
 		$posts = Database::query("SELECT * FROM data");
+		
 		$postsClean = array();
 		for ($i = 0; $i < count($posts); $i++) {
 			if (!($i % 2))
 				$postsClean[] = array("text" => html_entity_decode($posts[$i]["text"]),
-				                      "data" => get_object_vars(json_decode(stripslashes(html_entity_decode($posts[$i]["data"])))));
+				                      "info" => get_object_vars(json_decode(stripslashes(html_entity_decode($posts[$i]["data"])))));
 		}
+		
+		$templateArray = array();
+		$templateArray["posts"] = $postsClean;
+		$templateArray["post"]= end($postsClean);
+		$templateArray["general"] = array(
+			"path" => Config::getVal("general", "path"),
+			"title" => Config::getVal("general", "title")
+		);
 	
 		foreach ($filesToCompile as $template => $output) {
-			$templateParsed = Template::load($template, $postsClean);
+			$templateParsed = Template::load($template, $templateArray);
 			FileSystem::writeFile($output, $templateParsed);
 		}
 	

@@ -2,6 +2,7 @@
 <?php
 
 include __DIR__."/lib/iceberg/autoloader/Autoloader.php";
+include __DIR__."/lib/Twig/Autoloader.php";
 
 use iceberg\log\Log;
 use iceberg\hook\Hook;
@@ -15,6 +16,8 @@ define("ROOT_DIR", __DIR__.DIRECTORY_SEPARATOR);
 Autoloader::setNamespace("iceberg", ROOT_DIR."lib/iceberg");
 Autoloader::setNamespace("command", ROOT_DIR."lib/command");
 Autoloader::setNamespace("hook", ROOT_DIR."lib/hook");
+
+Twig_Autoloader::register();
 
 ErrorHandler::register();
 

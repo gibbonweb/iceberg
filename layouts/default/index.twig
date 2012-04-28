@@ -1,0 +1,11 @@
+{% extends "base.twig" %}
+
+{% block title %}Welcome to this Example Blog{% endblock %}
+
+{% block content %}
+	<ul>
+		{% for item in posts %}
+			<li><a href="{{ general.path }}/article/{{ item.info.slug }}">{{ item.info.title }}</a></li>
+		{% endfor %}
+	</ul>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.twig" %}
+
+{% block title %}{{ post.info.title }}{% endblock %}
+
+{% block content %}
+	<header>
+		<h1>{{ post.info.title }}</h1>
+		<h3>written by {{ post.info.author }} on {{ post.info.time|date("m/d/Y") }}</h3>
+	</header>
+	<article>
+		{% autoescape false %}
+			{{ post.text }}
+		{% endautoescape %}
+	</article>
+	
+	<ul>
+		{% for item in posts %}
+			<li><a href="{{ general.path }}/article/{{ item.info.slug }}">{{ item.info.title }}</a></li>
+		{% endfor %}
+	</ul>
+{% endblock %}

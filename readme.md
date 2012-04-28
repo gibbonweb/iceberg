@@ -79,20 +79,20 @@ Your new article should now be awaiting you in the output dir! However, you'll n
 Writing Themes
 --------------
 
-Writing themes with Iceberg is really easy. It's simply an HTML file containing some PHP. When you set a "layout" file in your post, it will generate the corresponding ``<layout name>.html.tpl`` file inside your layouts directory.
-It will be given a single variable; the ``$posts`` variable, which is an array of *all* the posts. The easiest way to get the last post (the one to be compiled) is through the ``end($posts)`` method, which will return the last post array. You can then grab the informations from there.
-The easiest way to see how this works is to look at the default themes, included in Iceberg. You can then work atop of that.
+Writing themes with Iceberg is really easy. Iceberg uses [Twig](http://twig.sensiolabs.org/) for it's templating, so please refer to it's own documentation for information. Templates should have the ``.twig`` extension.
 
-Another feature of Iceberg is the "reload" file. This is a file named ``<layout name>.reload.yml`` at the same level as the corresponding layout file. When you run the generate command, before compiling the actual post layout, it will read this file to see if there are any other files that should be reloaded.
-If there are some, it will compile them as well, with the new ``$posts`` array. This can be useful, for example, for updating the post list, or an RSS feed.
+Another feature of Iceberg is the "reload" file. This is a file named ``<layout name>.reload`` at the same level as the corresponding layout file. When you run the generate command, before compiling the actual post layout, it will read this file to see if there are any other files that should be reloaded.
+If there are some, it will compile them as well. This can be useful, for example, for updating the post list on your homepage, or an RSS feed.
 This file also supports directories. Let's say you want to copy a directory containing some CSS files, it can do that as well. Here's the general syntax:
 
 	# template: output name
 	index: index.html
 	rss: feed.rss
-	
+
 	# directory: output path
 	static: static
+
+Note that you musn't add the ``.twig`` extension when declaring a template in the reload file.
 
 Writing Hooks
 -------------
@@ -135,7 +135,7 @@ All hooks should extend from either the ``AbstractShellHook`` class, if you want
 		}
 	
 	}
-	
+
 Another example, this time for a code hook:
 
 	lib/hook/PreGenerateHook.php
@@ -154,7 +154,7 @@ Another example, this time for a code hook:
 		}
 	
 	}
-	
+
 (Both these examples are actually placeholder hooks, and they're already part of Iceberg, so you can refer to them / edit them right in the hooks directory.)
 
 On the other hand, if you'd like to stop any hooks from running during the execution of a command, simply append the ``--no-hook`` parameter to the command (see the manual file for more information).

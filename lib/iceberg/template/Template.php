@@ -2,24 +2,17 @@
 
 namespace iceberg\template;
 
-use iceberg\template\exceptions\TemplateFileNotFoundException;
+use iceberg\config\Config;
 
 class Template {
 
 	public static function load($template, $data) {
 		
-		if (!file_exists($template))
-			throw new TemplateFileNotFoundException("Template file \"$template\" not found.");
+		$loader = new \Twig_Loader_Filesystem(ROOT_DIR.Config::getVal("article", "layout"));
+		$twig = new \Twig_Environment($loader);
 		
-		ob_start();
-		$posts = &$data;
-		
-		include $template;
+		return $twig->render($template, $data);
 
-		$compiled = ob_get_contents();
-		ob_end_clean();
-		
-		return $compiled;
 	}
 
 }
