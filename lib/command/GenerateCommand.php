@@ -58,14 +58,14 @@ class GenerateCommand extends AbstractCommand {
 		$post["info"] = Spyc::YAMLLoadString(trim($meta));
 		$post["info"]["time"] = filemtime($inputFile);
 		$post["text"] = $markdown->transform($postContent);
-		$post["hash"] = md5($post["data"]["title"]);
+		$post["hash"] = md5($post["info"]["title"]);
 		
 		if (!isset($post["info"]["author"]))
 			$post["info"]["author"] = Config::getVal("general", "author");
 		
 		$absoluteAssetPath = Config::getVal("general", "path")
 		                    ."/"
-		                    .str_replace("(name)", $post["data"]["slug"], Config::getVal("article", "output"));
+		                    .str_replace("(name)", $post["info"]["slug"], Config::getVal("article", "output"));
 		$post["text"] = preg_replace('/="assets(.*)"/', "=\"".$absoluteAssetPath."/assets$1\"", $post["text"]);
 		
 		$postQueryData = $post;
@@ -87,7 +87,7 @@ class GenerateCommand extends AbstractCommand {
 	
 		$templatePath = $post["info"]["layout"].".twig";
 		$templateOutputPath = Config::getVal("general", "output")
-		                     .str_replace("(name)", $post["data"]["slug"], Config::getVal("article", "output"))
+		                     .str_replace("(name)", $post["info"]["slug"], Config::getVal("article", "output"))
 		                     ."index.html";
 	
 		$filesToCompile[$templatePath] = ROOT_DIR.$templateOutputPath;
@@ -135,7 +135,7 @@ class GenerateCommand extends AbstractCommand {
 		$postAssets = ROOT_DIR.str_replace("(name)", $args[0], Config::getVal("article", "input"))."/assets";
 		$postAssetsOutput = ROOT_DIR
 		                   .Config::getVal("general", "output")."/"
-		                   .str_replace("(name)", $post["data"]["slug"], Config::getVal("article", "output"))
+		                   .str_replace("(name)", $post["info"]["slug"], Config::getVal("article", "output"))
 		                   ."/assets";
 
 		if (is_dir($postAssets))

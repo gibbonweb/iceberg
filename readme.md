@@ -122,7 +122,7 @@ All hooks should extend from either the ``AbstractShellHook`` class, if you want
 	
 		/* This is the path in which the hook commands will be run.   */
 		/* Iceberg will chdir() into this before running the scripts. */
-		/
+	
 		protected static $path = "";
 		
 		/* This is the command you will want to run.                  */
