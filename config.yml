@@ -1,6 +1,6 @@
 general:
 
-	title: Example Iceberg Site
+	title: Example Iceberg Site                             # The name of your site
 	path: http://www.example.com                            # The url that your blog will be visible (no trailing slash)
 	timezone: Europe/Paris                                  # See http://php.net/manual/en/timezones.php
 	author: Cyril Mengin                                    # The author of all posts (can be overwritten in the posts)
@@ -8,9 +8,9 @@ general:
 	logging: iceberg.log                                    # Where Iceberg should log errors. Set to false for none
 	database: iceberg.db                                    # The path of the SQLite database that will contain post info
 	output: output/                                         # The root for the output directory (trailing slash required)
-	
+
 article:
 
 	input: data/(name)                                      # The path of the article (name) = article name
-	output: article/(name)                                  # The file the blog post will be written to, relative to the output dir
+	output: article/(name)/                                 # The file the blog post will be written to, relative to the output dir (trailing slash required)
 	layout: layouts/default/                                # The root of the layouts directory to be used (trailing slash required)
