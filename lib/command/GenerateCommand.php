@@ -75,7 +75,7 @@ class GenerateCommand extends AbstractCommand {
 		$postQuery = "INSERT OR IGNORE INTO data (hash, text, data) VALUES (\""
 		             .$postQueryData["hash"]
 		             ."\", \""
-		             .str_replace("\n", "", htmlentities($postQueryData["text"]))
+		             .str_replace("\n", '\n', htmlentities($postQueryData["text"]))
 		             ."\", \""
 		             .htmlentities(addslashes($postQueryData["data"]))."\")";
 		Database::query($postQuery);
@@ -115,7 +115,7 @@ class GenerateCommand extends AbstractCommand {
 		$postsClean = array();
 		for ($i = 0; $i < count($posts); $i++) {
 			if (!($i % 2))
-				$postsClean[] = array("text" => html_entity_decode($posts[$i]["text"]),
+				$postsClean[] = array("text" => str_replace('\n', "\n", html_entity_decode($posts[$i]["text"])),
 				                      "info" => get_object_vars(json_decode(stripslashes(html_entity_decode($posts[$i]["data"])))));
 		}
 		
