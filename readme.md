@@ -1,4 +1,4 @@
-# ![Markdown](https://github.com/dcurtis/markdown-mark/raw/master/png/66x40-solid.png) Iceberg v1
+# ![Markdown](https://github.com/dcurtis/markdown-mark/raw/master/png/39x24-solid.png) Iceberg v1
 
 Iceberg is a static file blogging platform, built around **Markdown** (there is support for Markdown Plus). It runs on PHP 5.3+, and unlike many other alternatives, it doesn't require any external libraries or dependencies. It's as simple download, run the script, and you've got yourself a static blog.
 Iceberg is being developed by **Cyril Mengin** (Twitter: [@cyrilmengin](http://twitter.com/cyrilmengin)) as well as various other contributors.
